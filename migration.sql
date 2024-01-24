@@ -22,7 +22,10 @@ CREATE TABLE public.conta (
   limite_credito numeric(10,2) NOT NULL,
   limite_disponivel numeric(10,2) NOT NULL,
   limite_ocupado numeric(10,2) NOT NULL,
-  saldo_atual numeric(10,2) NOT NULL
+  saldo_atual numeric(10,2) NOT NULL,
+  CONSTRAINT fk_conta_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES public.usuario (id)
 );
 
 -- Migra a tabela DESPESA
@@ -32,7 +35,10 @@ CREATE TABLE public.despesa (
   valor numeric(10,2) NOT NULL,
   quitado boolean NOT NULL,
   fixa_ou_recorrente boolean NOT NULL,
-  recorrencia integer NOT NULL
+  recorrencia integer NOT NULL,
+  CONSTRAINT fk_despesa_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES public.usuario (id)
 );
 
 -- Migra a tabela RECEITA
@@ -41,7 +47,10 @@ CREATE TABLE public.receita (
   id_usuario integer NOT NULL,
   valor numeric(10,2) NOT NULL,
   fixa_ou_recorrente boolean NOT NULL,
-  recorrencia integer NOT NULL
+  recorrencia integer NOT NULL,
+  CONSTRAINT fk_receita_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES public.usuario (id)
 );
 
 -- Migra a tabela CARTAO_DE_CREDITO
@@ -52,7 +61,13 @@ CREATE TABLE public.cartao_de_credito (
   limite numeric(10,2) NOT NULL,
   limite_disponivel numeric(10,2) NOT NULL,
   limite_ocupado numeric(10,2) NOT NULL,
-  vencimento date NOT NULL
+  vencimento date NOT NULL,
+  CONSTRAINT fk_cartao_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES public.usuario (id),
+  CONSTRAINT fk_cartao_conta
+    FOREIGN KEY (id_conta)
+    REFERENCES public.conta (id)
 );
 
 -- Migra a tabela OBJETIVO
@@ -66,5 +81,8 @@ CREATE TABLE public.objetivo (
   valor_final numeric(10,2) NOT NULL,
   valor_inicial numeric(10,2) DEFAULT 0,
   fixa_ou_recorrente boolean NOT NULL,
-  recorrencia integer NOT NULL
+  recorrencia integer NOT NULL,
+  CONSTRAINT fk_objetivo_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES public.usuario (id)
 );
